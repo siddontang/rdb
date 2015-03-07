@@ -13,10 +13,6 @@ import (
 	"testing"
 )
 
-func Fatalf(t *testing.T, format string, args ...interface{}) {
-	t.Fatalf("%s\n%s", fmt.Sprintf(format, args...), trace.TraceN(1, 32))
-}
-
 func AssertNoError(t *testing.T, err error) {
 	if err == nil {
 		return
