@@ -10,8 +10,6 @@ import (
 	"hash"
 	"io"
 	"strconv"
-
-	"github.com/cupcake/rdb/crc64"
 )
 
 type Loader struct {
@@ -22,7 +20,7 @@ type Loader struct {
 
 func NewLoader(r io.Reader) *Loader {
 	l := &Loader{}
-	l.crc = crc64.New()
+	l.crc = newDigest()
 	l.rdbReader = newRdbReader(io.TeeReader(r, l.crc))
 	return l
 }
@@ -104,7 +102,7 @@ func (l *Loader) LoadEntry() (entry *Entry, err error) {
 
 func createValDump(otype byte, obj []byte) []byte {
 	var b bytes.Buffer
-	c := digest.New()
+	c := newDigest()
 	w := io.MultiWriter(&b, c)
 	w.Write([]byte{otype})
 	w.Write(obj)
